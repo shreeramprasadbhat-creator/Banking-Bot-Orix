@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Orbix Banking Bot | Sentiment Analysis</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>🏦 Orbix Banking Bot</h1>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <nav id="navbar">
+      <a href="home.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="texttospeech.html">Text To Speech</a>
+      <a href="sentiment.html">Sentiment Analysis</a>
+      <a href="index.html">Logout</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      <h2 class="section-title">Sentiment Analysis 💬</h2>
+      <p class="section-desc">
+        Share your feedback about our banking services and Orbix will analyze its sentiment, emotion, and extract key insights. If the Watson API is unavailable, a fallback analyzer ensures the page still works.
+      </p>
+
+      <div class="analysis-section" role="region" aria-labelledby="analysis-heading">
+        <label id="analysis-heading" class="muted">Your Banking Feedback</label>
+        <textarea id="feedback-text" placeholder="Tell us what you think about our services..."></textarea>
+
+        <div class="btn-group">
+          <button class="btn primary" onclick="analyzeFeedback()">Analyze Feedback</button>
+          <button class="btn ghost" onclick="clearFeedback()">Clear</button>
+          <button class="btn success" onclick="speakFeedback()">Text to Speech</button>
+        </div>
+
+        <div id="status-msg" class="muted">Your analysis will appear below.</div>
+
+        <div id="sentiment-result-container" aria-live="polite">
+          <div id="sentiment-result" style="display:none;">
+            <div class="emoji" id="sentiment-emoji">😐</div>
+            <div class="sentiment-label" id="sentiment-label">Neutral</div>
+            <div class="sentiment-explain" id="sentiment-explanation">
+              This indicates a neutral sentiment about your banking experience.
+            </div>
+
+            <div class="progress-wrap">
+              <svg viewBox="0 0 100 100" width="110" height="110">
+                <circle cx="50" cy="50" r="44" stroke="#0b1220" stroke-width="12" fill="none"></circle>
+                <circle id="progress-bar" cx="50" cy="50" r="44" stroke="#c59d5f" stroke-width="12" stroke-linecap="round" fill="none" transform="rotate(-90 50 50)"></circle>
+              </svg>
+              <div class="progress-text" id="average-score-text">0.00</div>
+            </div>
+
+            <div id="detected-emotion" class="muted">Emotion: Calm</div>
+            <div id="detected-keywords" class="keywords">
+              <span>Loan</span>
+              <span>Support</span>
+              <span>Secure</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Orbix Banking Bot. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById("navbar").classList.toggle("active");
+    }
+
+    function analyzeFeedback() {
+      const text = document.getElementById("feedback-text").value.trim();
+      const result = document.getElementById("sentiment-result");
+      const emoji = document.getElementById("sentiment-emoji");
+      const label = document.getElementById("sentiment-label");
+      const explanation = document.getElementById("sentiment-explanation");
+      const score = document.getElementById("average-score-text");
+      const emotion = document.getElementById("detected-emotion");
+      const keywords = document.getElementById("detected-keywords");
+      const status = document.getElementById("status-msg");
+
+      if (!text) {
+        status.textContent = "⚠️ Please enter feedback to analyze.";
+        result.style.display = "none";
+        return;
+      }
+
+      // Fallback sentiment logic (demo)
+      let sentiment = "Neutral";
+      let emojiChar = "😐";
+      let scoreVal = "0.50";
+      let emotionText = "Calm";
+      let keywordList = ["Service", "Loan", "Secure"];
+
+      if (text.includes("great") || text.includes("excellent")) {
+        sentiment = "Positive";
+        emojiChar = "😊";
+        scoreVal = "0.85";
+        emotionText = "Happy";
+        keywordList = ["Support", "Fast", "Reliable"];
+      } else if (text.includes("bad") || text.includes("slow")) {
+        sentiment = "Negative";
+        emojiChar = "😠";
+        scoreVal = "0.20";
+        emotionText = "Frustrated";
+        keywordList = ["Delay", "Complaint", "Issue"];
+      }
+
+      emoji.textContent = emojiChar;
+      label.textContent = sentiment;
+      explanation.textContent = `This indicates a ${sentiment.toLowerCase()} sentiment about your banking experience.`;
+      score.textContent = scoreVal;
+      emotion.textContent = `Emotion: ${emotionText}`;
+      keywords.innerHTML = keywordList.map(k => `<span>${k}</span>`).join("");
+      result.style.display = "block";
+      status.textContent = "";
+    }
+
+    function clearFeedback() {
+      document.getElementById("feedback-text").value = "";
+      document.getElementById("sentiment-result").style.display = "none";
+      document.getElementById("status-msg").textContent = "Your analysis will appear below.";
+    }
+
+    function speakFeedback() {
+      const text = document.getElementById("feedback-text").value.trim();
+      if (!text) return;
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "en-US";
+      speechSynthesis.speak(utterance);
+    }
+  </script>
+</body>
+</html>

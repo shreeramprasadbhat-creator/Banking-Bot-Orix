@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About | Orbix Banking Bot</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🏦 Orbix Banking Bot</h1>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <nav id="navbar">
+  <a href="home.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="texttospeech.html">Text To Speech</a>
+  <a href="sentiment.html">Sentiment Analysis</a>
+  <a href="index.html">Logout</a>
+</nav>
+  </header>
+
+  <div class="container">
+    <h2>What is Orbix Banking Bot?</h2>
+    <p>
+      Orbix is your intelligent banking assistant. 🧠  
+      From checking balances to applying for loans, Orbix helps you manage your finances with ease and security.  
+      It’s designed to offer personalized banking support, anytime you need it. 💳
+    </p>
+
+    <h2>Features</h2>
+    <ul>
+      <li>🤖 Chat-based banking support</li>
+      <li>📈 Real-time account insights</li>
+      <li>🏠 Loan eligibility and EMI calculator</li>
+      <li>🔐 Secure login and session handling</li>
+    </ul>
+  </div>
+
+  <script>
+  window.watsonAssistantChatOptions = {
+    integrationID: "97b5b928-7738-4868-a0e8-4dd57d0e7039", // The ID of this integration.
+    region: "au-syd", // The region your integration is hosted in.
+    serviceInstanceID: "72df9db0-797e-4378-8f56-fd9fe08a1594", // The ID of your service instance.
+    onLoad: async (instance) => { await instance.render(); }
+  };
+  setTimeout(function(){
+    const t=document.createElement('script');
+    t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";
+    document.head.appendChild(t);
+  });
+</script>
+  <script>
+    function toggleMenu() {
+      document.getElementById("navbar").classList.toggle("active");
+    }
+  </script>
+  <footer>
+  <p>© 2025 Orbix Banking Bot. All rights reserved.</p>
+</footer>
+</body>
+</html>
